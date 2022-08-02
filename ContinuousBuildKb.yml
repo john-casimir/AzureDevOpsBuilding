@@ -19,7 +19,5 @@ pool:
   name: CustomBuild
 
 steps:
-- script: |
-      echo $(MSBUILD) $(BL_PATH) -target:CreateKB /p:WorkingDirectory=$(WORKING_DIR)};CreateDbInKbFolder=True;DbaseName=$(KB_ALIAS);DbaseUseIntegratedSecurity=True;ServerUrl=$(SERVER_URL);ServerKbAlias=$(KB_ALIAS);ServerUsername=$(USER);ServerPassword=$(PASS) > executed.txt
-      type executed.txt
+- script: $(MSBUILD) $(BL_PATH) -target:CreateKB /p:WorkingDirectory=$(WORKING_DIR)};CreateDbInKbFolder=True;DbaseName=$(KB_ALIAS);DbaseUseIntegratedSecurity=True;ServerUrl=$(SERVER_URL);ServerKbAlias=$(KB_ALIAS);ServerUsername=$(USER);ServerPassword=$(PASS) > executed.txt
   displayName: 'Create KB'
