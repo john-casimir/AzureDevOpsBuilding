@@ -22,5 +22,5 @@ steps:
 - script: |
     echo $(MSBUILD) $(BL_PATH) -target:CreateKB /p:WorkingDirectory=$(WORKING_DIR);CreateDbInKbFolder=True;DbaseUseIntegratedSecurity=True;ServerUrl=$(SERVER_URL);ServerKbAlias=$(KB_ALIAS);ServerUsername=$(USER);ServerPassword=$(PASS) > executed.txt
     echo ##[error]"READING FILE"
-    type ##[warning]executed.txt
+    type executed.txt
   displayName: 'Create KB'
