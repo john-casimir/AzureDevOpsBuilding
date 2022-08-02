@@ -10,7 +10,7 @@ variables:
   KB_ALIAS: 'JenkinsClient'
   SERVER_URL: 'https://sandform.genexusserver.com/kbs'
   USER: 'gxtechnical\nachob97'
-  PASS: ''
+  PASS: $(password)
 
 trigger:
 - main
