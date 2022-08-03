@@ -20,5 +20,5 @@ pool:
 
 steps:
 - script: | # $(MSBUILD) $(BL_PATH) -target:CreateKB /p:WorkingDirectory=$(WORKING_DIR);CreateDbInKbFolder=True;DbaseUseIntegratedSecurity=True;ServerUrl=$(SERVER_URL);ServerKbAlias=$(KB_ALIAS);ServerUsername=$(USER);ServerPassword=$(PASS)
-    $(MSBUILD) $(BL_PATH)\KBBuild.msbuild -target:CreateOrUpdateKB /p:GXInstall=$(BL_PATH);KBDirectory=$(WORKING_DIR);DoUpdate=true;KBServerUri=$(SERVER_URL);KBServerKBAlias=$(KB_ALIAS);GXserverUserName=$(USER);GXserverUserPassword=$(PASS)
+    $(MSBUILD) $(BL_PATH)\QueryViewerServices.msbuild -target:CreateOrUpdateKB /p:GXInstall=$(BL_PATH);KBDirectory=$(WORKING_DIR);DoUpdate=true;KBServerUri=$(SERVER_URL);KBServerKBAlias=$(KB_ALIAS);GXserverUserName=$(USER);GXserverUserPassword=$(PASS)
   displayName: 'Create or Update KB'
