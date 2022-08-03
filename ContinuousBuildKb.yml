@@ -5,7 +5,7 @@
 
 variables:
   MSBUILD: '"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Msbuild\\Current\\Bin\\MSBuild.exe"'
-  BL_PATH: '"C:\\Program Files (x86)\\GeneXus\\GeneXus17\\TeamDev.msbuild"'
+  BL_PATH: '"C:\Development\Trunk\BuildProcess\KBBuild.msbuild"'
   WORKING_DIR: '"C:\\AzureCheckouts"'
   KB_ALIAS: '"JenkinsClient"'
   SERVER_URL: '"https://sandform.genexusserver.com/kbs"'
@@ -19,8 +19,6 @@ pool:
   name: CustomBuild
 
 steps:
-- script: |
-    echo $(MSBUILD) $(BL_PATH) -target:CreateKB /p:WorkingDirectory=$(WORKING_DIR);CreateDbInKbFolder=True;DbaseUseIntegratedSecurity=True;ServerUrl=$(SERVER_URL);ServerKbAlias=$(KB_ALIAS);ServerUsername=$(USER);ServerPassword=$(PASS) > executed.txt
-    echo ##[error]"READING FILE"
-    type executed.txt
-  displayName: 'Create KB'
+- script: | # $(MSBUILD) $(BL_PATH) -target:CreateKB /p:WorkingDirectory=$(WORKING_DIR);CreateDbInKbFolder=True;DbaseUseIntegratedSecurity=True;ServerUrl=$(SERVER_URL);ServerKbAlias=$(KB_ALIAS);ServerUsername=$(USER);ServerPassword=$(PASS)
+    $(MSBUILD) $(BL_PATH) -target:CreateOrUpdateKB /p:KBDirectory=$(WORKING_DIR);DoUpdate=true;KBServerUri=$(SERVER_URL);KBServerKBAlias=$(KB_ALIAS);GXserverUserName=$(USER);GXserverUserPassword=$(PASS)
+  displayName: 'Create or Update KB'
