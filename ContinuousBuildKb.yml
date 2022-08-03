@@ -5,7 +5,7 @@
 
 variables:
   MSBUILD: '"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Msbuild\\Current\\Bin\\MSBuild.exe"'
-  BL_PATH: '"C:\Development\Trunk\BuildProcess\KBBuild.msbuild"'
+  BL_PATH: '"C:\Program Files (x86)\GeneXus\GeneXus17\KBBuild.msbuild"'
   WORKING_DIR: '"C:\\AzureCheckouts"'
   KB_ALIAS: '"JenkinsClient"'
   SERVER_URL: '"https://sandform.genexusserver.com/kbs"'
