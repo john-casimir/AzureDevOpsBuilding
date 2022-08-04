@@ -11,7 +11,7 @@ variables:
   SERVER_URL: '"https://sandform.genexusserver.com/kbs"'
   USER: '"gxtechnical\nachob97"'
   PASS: $(password)
-  RUN: $(Build.BuildNumber)
+  RUN: $(Build.BuildId)
 
 trigger:
 - main
