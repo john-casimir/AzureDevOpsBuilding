@@ -20,8 +20,8 @@ pool:
   name: CustomBuild
 
 steps:
-- script: | 
-    $(MSBUILD) $(BL_PATH)\teamdev.Msbuild -target:CreateKB /p:WorkingDirectory=$(WORKING_DIR)\\$(RUN);CreateDbInKbFolder=True;DbaseName=$(KB_ALIAS)$(RUN);DbaseUseIntegratedSecurity=True;ServerUrl=$(SERVER_URL);ServerKbAlias=$(KB_ALIAS);ServerUsername=$(USER);ServerPassword=$(PASS)
-    $(MSBUILD) $(BL_PATH)\teamdev.Msbuild -target:Build
-    #$(MSBUILD) $(BL_PATH)\QueryViewerServices.msbuild -target:CreateOrUpdateKB /p:GXInstall=$(BL_PATH);KBDirectory=$(WORKING_DIR);DoUpdate=true;KBServerUri=$(SERVER_URL);KBServerKBAlias=$(KB_ALIAS);GXserverUserName=$(USER);GXserverUserPassword=$(PASS)
+- script: $(MSBUILD) $(BL_PATH)\teamdev.Msbuild -target:CreateKB /p:WorkingDirectory=$(WORKING_DIR)\\$(RUN);CreateDbInKbFolder=True;DbaseName=$(KB_ALIAS)$(RUN);DbaseUseIntegratedSecurity=True;ServerUrl=$(SERVER_URL);ServerKbAlias=$(KB_ALIAS);ServerUsername=$(USER);ServerPassword=$(PASS)
   displayName: 'Create or Update KB'
+
+- script: $(MSBUILD) $(BL_PATH)\teamdev.Msbuild -target:Build /p:WorkingDirectory=$(WORKING_DIR)\\$(RUN)
+  displayName: 'Build KB'
