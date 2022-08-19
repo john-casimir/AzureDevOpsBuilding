@@ -11,7 +11,6 @@ variables:
   GXSERVER_URL: '"https://sandform.genexusserver.com/kbs"'
   GXSERVER_USER: '"gxtechnical\nachob97"'
   GXSERVER_PASS: $(password)
-  RUN: $(Build.BuildId)
 
 trigger:
 - main
@@ -20,7 +19,10 @@ pool:
   name: CustomBuild
 
 steps:
-- script: $(MSBUILD) $(BL_PATH)\teamdev.Msbuild -target:CreateKB /p:WorkingDirectory=$(WORKING_DIR)\\$(RUN);CreateDbInKbFolder=True;DbaseName=$(KB_ALIAS)$(RUN);DbaseUseIntegratedSecurity=True;ServerUrl=$(GXSERVER_URL);ServerKbAlias=$(KB_ALIAS);ServerUsername=$(GXSERVER_USER);ServerPassword=$(GXSERVER_PASS)
+- script: $(MSBUILD) $(BL_PATH)\AzureCICD.msbuild -target:CreateKB /p:WorkingDirectory=$(WORKING_DIR)\\$(RUN);
+          CreateDbInKbFolder=True;DbaseName=$(KB_ALIAS);DbaseUseIntegratedSecurity=True;
+          ServerUrl=$(GXSERVER_URL);ServerKbAlias=$(KB_ALIAS);ServerUsername=$(GXSERVER_USER);
+          ServerPassword=$(GXSERVER_PASS)
   displayName: 'Create or Update KB'
 
 - script: $(MSBUILD) $(BL_PATH)\teamdev.Msbuild -target:Build /p:WorkingDirectory=$(WORKING_DIR)\\$(RUN)
