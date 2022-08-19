@@ -6,22 +6,21 @@
 variables:
   MSBUILD: '"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Msbuild\\Current\\Bin\\MSBuild.exe"'
   BL_PATH: '"C:\Program Files (x86)\GeneXus\GeneXus17"'
-  WORKING_DIR: '"C:\\AzureCheckouts"'
-  KB_ALIAS: '"ActualizacionAmbiente"'
+  WORKING_DIR: '"C:\\AzureCheckouts\\$(KB_ALIAS)"'
+  KB_ALIAS: '"ActualizacionAmbiente2"'
   GXSERVER_URL: '"https://sandform.genexusserver.com/kbs"'
   GXSERVER_USER: '"gxtechnical\nachob97"'
   GXSERVER_PASS: $(password)
-  RUN: $(Build.BuildId)
 
 trigger:
 - main
 
 pool:
-  name: CustomBuild
+  name: GeneXusBuilder
 
 steps:
-- script: $(MSBUILD) $(BL_PATH)\teamdev.Msbuild -target:CreateKB /p:WorkingDirectory=$(WORKING_DIR)\\$(RUN);CreateDbInKbFolder=True;DbaseName=$(KB_ALIAS)$(RUN);DbaseUseIntegratedSecurity=True;ServerUrl=$(GXSERVER_URL);ServerKbAlias=$(KB_ALIAS);ServerUsername=$(GXSERVER_USER);ServerPassword=$(GXSERVER_PASS)
+- script: $(MSBUILD) $(BL_PATH)\AzureCICD.msbuild -target:CreateOrUpdateKB /p:WorkingDirectory=$(WORKING_DIR);CreateDbInKbFolder=True;DbaseName=$(KB_ALIAS);DbaseUseIntegratedSecurity=True;ServerUrl=$(GXSERVER_URL);ServerKbAlias=$(KB_ALIAS);ServerUsername=$(GXSERVER_USER);ServerPassword=$(GXSERVER_PASS)
   displayName: 'Create or Update KB'
 
-- script: $(MSBUILD) $(BL_PATH)\teamdev.Msbuild -target:Build /p:WorkingDirectory=$(WORKING_DIR)\\$(RUN)
+- script: $(MSBUILD) $(BL_PATH)\teamdev.Msbuild -target:Build /p:WorkingDirectory=$(WORKING_DIR)
   displayName: 'Build KB'
