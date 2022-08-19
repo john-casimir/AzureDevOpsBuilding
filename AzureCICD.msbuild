@@ -1,0 +1,78 @@
+<Project DefaultTargets="SHOW" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<GX_INSTALL_DIR Condition=" '$(GX_INSTALL_DIR)' == '' ">$(MSBuildThisFileDirectory)</GX_INSTALL_DIR>
+	</PropertyGroup>
+
+	<Import Project="$(GX_INSTALL_DIR)GeneXus.Tasks.targets" Condition=" Exists('$(GX_INSTALL_DIR)GeneXus.Tasks.targets') "/>	
+	<Import Project="$(GX_INSTALL_DIR)\genexus.server.tasks.targets" Condition=" Exists('$(GX_INSTALL_DIR)GeneXus.Tasks.targets') "/>
+
+	<PropertyGroup>
+		<!--Input Parameters-->
+		<DoUpdate>True</DoUpdate>
+		
+		<!-- Server Properties -->
+		<ServerUrl></ServerUrl>
+		<ServerUsername></ServerUsername>
+		<ServerPassword></ServerPassword>
+		<ServerKbAlias></ServerKbAlias>
+		<VersionName></VersionName>
+
+		<!-- Working KB Properties -->
+		<WorkingDirectory></WorkingDirectory>
+		<DbaseServerInstance></DbaseServerInstance>
+		<CreateDbInKbFolder></CreateDbInKbFolder>
+		<DbaseUseIntegratedSecurity></DbaseUseIntegratedSecurity>
+		<DbaseServerUsername></DbaseServerUsername>
+		<DbaseServerPassword></DbaseServerPassword>
+		<DbaseName></DbaseName>
+		<WorkingVersion></WorkingVersion>
+		<WorkingEnvironment></WorkingEnvironment>
+
+		<!-- Building Properties -->
+		<ForceRebuild Condition=" '$(ForceRebuild)' == '' ">false</ForceRebuild>
+		
+		<!-- Environment Propreties -->
+	</PropertyGroup>
+	
+	<Target Name="SHOW" > 
+        <Message Text="	 - CreateOrUpdate" />
+		<Message Text="  - BuildAzure" />
+	</Target>
+
+	<Target Name="CreateOrUpdateKB">
+		<Error Message="Failed to import '$(GX_INSTALL_DIR)GeneXus.Tasks.targets'. Try setting the property GX_INSTALL_DIR to an actual GeneXus installation path." Condition=" !Exists('$(GX_INSTALL_DIR)GeneXus.Tasks.targets') " />
+		<ItemGroup>
+			<GXWFile Include="$(WorkingDirectory)\*.gxw"/>
+		</ItemGroup>
+		<CallTarget Targets="CreateKB" Condition="'@(GXWFile)'==''"/>
+		<CallTarget Targets="UpdateKB" Condition="'@(GXWFile)'!='' and $(DoUpdate)"/>
+	</Target>
+
+	<Target Name="CreateKB">
+		<Message Text="[GXBUILD:INFO] Creating KB '$(ServerKbAlias)' at '$(WorkingDirectory)' // SQLServer instance: $(SQLServerInstanceHost) // GXserver URI: $(KBServerUri) / GXserver User: $(GXserverUserName)" Importance="high" />
+		<PropertyGroup>
+			<KBGuid>$([System.Guid]::NewGuid())</KBGuid>
+		</PropertyGroup>
+
+		<CreateKnowledgeBaseFromServer
+			ServerKBAlias="$(ServerKbAlias)"
+			ServerUri="$(ServerUrl)"
+			Directory="$(WorkingDirectory)"
+			CreateDbInKbFolder="$(CreateDbInKbFolder)"
+			DBName="$(DbaseName)_$(KBGuid)"
+			ServerUserName="$(ServerUsername)"
+			ServerPassword="$(ServerPassword)"/>
+	</Target>
+
+	<Target Name="UpdateKB">
+		<OpenKnowledgeBase Directory="$(WorkingDirectory)"/>
+		<UpdateFromServer
+			ServerUserName="$(ServerUsername)"
+			ServerPassword="$(ServerPassword)"
+			OutputFile="$(BPUpdateLogFile)">
+			<Output TaskParameter="ObjectsToUpdateQuantity" PropertyName="UpdatedObjectsCount"/>
+		</UpdateFromServer>
+		<CloseKnowledgeBase/>
+	</Target>
+
+</Project>
