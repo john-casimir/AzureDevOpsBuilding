@@ -19,7 +19,7 @@ pool:
   name: CustomBuild
 
 steps:
-- script: $(MSBUILD) $(BL_PATH)\AzureCICD.msbuild -target:CreateKB /p:WorkingDirectory=$(WORKING_DIR)\\$(RUN);
+- script: $(MSBUILD) $(BL_PATH)\AzureCICD.msbuild -target:CreateKB /p:WorkingDirectory=$(WORKING_DIR);
           CreateDbInKbFolder=True;DbaseName=$(KB_ALIAS);DbaseUseIntegratedSecurity=True;
           ServerUrl=$(GXSERVER_URL);ServerKbAlias=$(KB_ALIAS);ServerUsername=$(GXSERVER_USER);
           ServerPassword=$(GXSERVER_PASS)
