@@ -6,7 +6,7 @@
 variables:
   MSBUILD: '"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Msbuild\\Current\\Bin\\MSBuild.exe"'
   BL_PATH: '"C:\Program Files (x86)\GeneXus\GeneXus17"'
-  WORKING_DIR: '"C:\\AzureCheckouts"'
+  WORKING_DIR: '"C:\\AzureCheckouts\\$(KB_ALIAS)"'
   KB_ALIAS: '"ActualizacionAmbiente2"'
   GXSERVER_URL: '"https://sandform.genexusserver.com/kbs"'
   GXSERVER_USER: '"gxtechnical\nachob97"'
