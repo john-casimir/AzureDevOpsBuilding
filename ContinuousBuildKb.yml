@@ -4,19 +4,19 @@
 # https://aka.ms/yaml
 
 variables:
-  MSBUILD: '"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Msbuild\\Current\\Bin\\MSBuild.exe"'
-  BL_PATH: '"C:\Program Files (x86)\GeneXus\GeneXus17"'
-  WORKING_DIR: '"C:\\AzureCheckouts\\$(KB_ALIAS)"'
+  MSBUILD: '"$(msbuid)"'
+  BL_PATH: '"$(genexus)"'
+  WORKING_DIR: '"$(kbpath)\\$(KB_ALIAS)"'
   KB_ALIAS: '"ActualizacionAmbiente2"'
-  GXSERVER_URL: '"https://sandform.genexusserver.com/kbs"'
-  GXSERVER_USER: '"gxtechnical\crown081"'
+  GXSERVER_URL: '"$(serverurl)"'
+  GXSERVER_USER: '"$(serveruser)"'
   GXSERVER_PASS: $(password)
 
 trigger:
 - main
 
 pool:
-  name: OscarPool
+  name: $(agent)
 
 steps:
 - script: $(MSBUILD) $(BL_PATH)\AzureCICD.msbuild -target:CreateOrUpdateKB /p:WorkingDirectory=$(WORKING_DIR);CreateDbInKbFolder=True;DbaseName=$(KB_ALIAS);DbaseUseIntegratedSecurity=True;ServerUrl=$(GXSERVER_URL);ServerKbAlias=$(KB_ALIAS);ServerUsername=$(GXSERVER_USER);ServerPassword=$(GXSERVER_PASS)
