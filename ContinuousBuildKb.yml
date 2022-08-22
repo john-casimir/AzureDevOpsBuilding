@@ -4,7 +4,7 @@
 # https://aka.ms/yaml
 
 variables:
-  MSBUILD: '"$(msbuild)"'
+  MSBUILD: '"$(msbuildpath)"'
   BL_PATH: '"$(genexus)"'
   WORKING_DIR: '"$(kbpath)\\$(KB_ALIAS)"'
   KB_ALIAS: '"ActualizacionAmbiente2"'
