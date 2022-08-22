@@ -9,7 +9,7 @@ variables:
   WORKING_DIR: '"C:\\AzureCheckouts\\$(KB_ALIAS)"'
   KB_ALIAS: '"ActualizacionAmbiente2"'
   GXSERVER_URL: '"https://sandform.genexusserver.com/kbs"'
-  GXSERVER_USER: '"gxtechnical\nachob97"'
+  GXSERVER_USER: '"gxtechnical\crown081"'
   GXSERVER_PASS: $(password)
 
 trigger:
