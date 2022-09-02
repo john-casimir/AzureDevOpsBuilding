@@ -34,6 +34,6 @@ steps:
 - script: $(MSBUILD) $(BL_PATH)\teamdev.Msbuild -target:Build /p:WorkingDirectory=$(WORKING_DIR)
   displayName: 'Build KB'
 
-- script: $(MSBUILD) $(BL_PATH)\DeploymentTargets\Azure\deploy.msbuild /t:Deploy /p:AZURE_PUBLISH_SETTINGS=$(PUBLISH_SETTINGS);PACKAGE_FORMAT="Automatic";KBPath="C:\AzureCheckouts\ActualizacionAmbiente2";DeploymentUnit="DeploymentUnit1";TargetId="AZURE"
+- script: $(MSBUILD) $(BL_PATH)\DeploymentTargets\Azure\deploy.msbuild /t:Deploy /p:AZURE_PUBLISH_SETTINGS=$(PUBLISH_SETTINGS);PACKAGE_FORMAT="Automatic";KBPath="C:\AzureCheckouts\ActualizacionAmbiente2";DeploymentUnit="DeploymentUnit1";TargetId="AZURE";GX_PROGRAM_DIR=$(BL_PATH)
 
   displayName: 'Deploy Webapp'
