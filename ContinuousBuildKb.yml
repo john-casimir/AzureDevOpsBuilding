@@ -14,8 +14,8 @@ variables:
 
 # Scheduled triggers
 schedules:
-- cron: "0 */1 * * *"
-  displayName: every one hour trigger
+- cron: "*/10 * * * *"
+  displayName: every 10 min trigger
   branches:
    include:
     - main
