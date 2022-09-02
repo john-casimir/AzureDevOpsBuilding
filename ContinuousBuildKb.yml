@@ -4,13 +4,18 @@
 # https://aka.ms/yaml
 
 variables:
-  MSBUILD: '"$(msbuildpath)"'
-  BL_PATH: '"$(genexus)"'
-  WORKING_DIR: '"$(kbpath)\\$(KB_ALIAS)"'
-  KB_ALIAS: '"ActualizacionAmbiente2"'
-  GXSERVER_URL: '"$(serverurl)"'
-  GXSERVER_USER: '"$(serveruser)"'
+  MSBUILD: $(msbuildpath)
+  BL_PATH: $(genexus)
+  WORKING_DIR: '$(kbpath)\\$(KB_ALIAS)'
+  KB_ALIAS: 'ActualizacionAmbiente2'
+  GXSERVER_URL: $(serverurl)
+  GXSERVER_USER: $(serveruser)
   GXSERVER_PASS: $(password)
+
+# Scheduled triggers
+schedules:
+- cron: "0 */1 * * *"
+  displayName: every one hour trigger
 
 trigger:
 - main
