@@ -16,6 +16,9 @@ variables:
 schedules:
 - cron: "0 */1 * * *"
   displayName: every one hour trigger
+  branches:
+   include:
+    - main
 
 trigger:
 - main
