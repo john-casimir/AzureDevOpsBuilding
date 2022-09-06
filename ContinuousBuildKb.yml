@@ -34,6 +34,8 @@ pool:
 steps:
 - script: $(MSBUILD) $(BL_PATH)\AzureCICD.msbuild -target:CreateOrUpdateKB /p:WorkingDirectory=$(WORKING_DIR);CreateDbInKbFolder=True;DbaseName=$(KB_ALIAS);DbaseUseIntegratedSecurity=True;ServerUrl=$(GXSERVER_URL);ServerKbAlias=$(KB_ALIAS);ServerUsername=$(GXSERVER_USER);ServerPassword=$(GXSERVER_PASS)
   displayName: 'Create or Update KB'
+  name: ProduceVar  # because we're going to depend on it, we need to name the step
+- script: echo $(ProduceVar) # this step uses the output variable
 
 - script: $(MSBUILD) $(BL_PATH)\teamdev.Msbuild -target:Build /p:WorkingDirectory=$(WORKING_DIR)
   displayName: 'Build KB'
