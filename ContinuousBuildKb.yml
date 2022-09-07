@@ -15,6 +15,7 @@ variables:
   DEPLOYMENT_UNIT: $(deploymentUnit)
   KBENVIRONMENT: $(environment)
   DEPLOY_NAME: $(deploymentUnit)$(Build.BuildNumber)
+  APPLICATION_KEY: $(encriptKey)
 
 # Scheduled triggers. Can also be setup through UI, which takes precendence.
 schedules:
@@ -47,17 +48,17 @@ steps:
    /p:DEPLOY_TARGETS="$(BL_PATH)\DeploymentTargets\Azure\azure.targets" 
    /p:DeployFullPath="$(WORKING_DIR)\NetModel\Deploy\AZURE\$(DEPLOYMENT_UNIT)\$(DEPLOY_NAME)" 
    /p:WebSourcePath="$(WORKING_DIR)\NetModel\web" /p:GX_PROGRAM_DIR="$(BL_PATH)" 
-   /p:AZURE_PUBLISH_SETTINGS=""C:\Users\ibianchi\Downloads\GeneXusDeploy.PublishSettings"" 
-   /p:APPLICATION_KEY="7EE806FE2F1098F88FE35D42546DB8D33B7166F31968A02898ECBDC45D036BA6"
+   /p:AZURE_PUBLISH_SETTINGS="$(PUBLISH_SETTINGS)" 
+   /p:APPLICATION_KEY="$(APPLICATION_KEY)"
 
    $(MSBUILD) /ToolsVersion:4.0 "$(WORKING_DIR)\NetModel\web\$(DEPLOY_NAME).gxdproj" /t:CreatePackage 
-   /p:GX_PROGRAM_DIR="$(BL_PATH)" /p:AZURE_PUBLISH_SETTINGS=""C:\Users\ibianchi\Downloads\GeneXusDeploy.PublishSettings"" 
-   /p:APPLICATION_KEY="7EE806FE2F1098F88FE35D42546DB8D33B7166F31968A02898ECBDC45D036BA6" /p:INCLUDE_GAM="False" /p:INCLUDE_GXFLOW_BACKOFFICE="True" 
+   /p:GX_PROGRAM_DIR="$(BL_PATH)" /p:AZURE_PUBLISH_SETTINGS="$(PUBLISH_SETTINGS)" 
+   /p:APPLICATION_KEY="$(APPLICATION_KEY)" /p:INCLUDE_GAM="False" /p:INCLUDE_GXFLOW_BACKOFFICE="True" 
    /p:APP_UPDATE="NONE" /p:ENABLE_KBN="False" /p:PACKAGE_FORMAT="Automatic"
    
    $(MSBUILD) "$(BL_PATH)\DeploymentTargets\Azure\deploy.msbuild" /t:Deploy 
-   /p:AZURE_PUBLISH_SETTINGS=""C:\Users\ibianchi\Downloads\GeneXusDeploy.PublishSettings"" 
-   /p:APPLICATION_KEY="5335ADF697DE7F241142E569A5CDD2D422B42FFC612EF2FBA604A37492313A67" /p:INCLUDE_GAM="False" /p:INCLUDE_GXFLOW_BACKOFFICE="True" 
+   /p:AZURE_PUBLISH_SETTINGS="$(PUBLISH_SETTINGS)" 
+   /p:APPLICATION_KEY="$(APPLICATION_KEY)" /p:INCLUDE_GAM="False" /p:INCLUDE_GXFLOW_BACKOFFICE="True" 
    /p:APP_UPDATE="NONE" /p:ENABLE_KBN="False" /p:PACKAGE_FORMAT="Automatic" /p:LANGUAGE="41" /p:GENERATOR=".NET" /p:APPLICATION_NAME="$(DEPLOY_NAME)" 
    /p:DEPLOY_PATH="$(WORKING_DIR)\NetModel\Deploy\AZURE\$(DEPLOYMENT_UNIT)\$(DEPLOY_NAME)" 
    /p:GX_PROGRAM_DIR="$(BL_PATH)" 
