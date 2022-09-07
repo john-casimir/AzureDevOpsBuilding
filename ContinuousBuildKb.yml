@@ -65,6 +65,6 @@ steps:
    /p:DeploymentUnit="$(DEPLOYMENT_UNIT)" /p:ProjectName="$(DEPLOY_NAME)" /p:TargetId="AZURE" /p:ObjectNames="DeploymentUnitCategory:$(DEPLOYMENT_UNIT)"
    /p:DEPLOY_TARGETS="$(BL_PATH)\DeploymentTargets\Azure\azure.targets" 
    /p:DeployFullPath="$(WORKING_DIR)\NetModel\Deploy\AZURE\$(DEPLOYMENT_UNIT)\$(DEPLOY_NAME)" 
-   /p:WebSourcePath="$(WORKING_DIR)\NetModel\web" /p:LANGUAGE="41" /p:GENERATOR="$(KBGENERATOR)"
+   /p:WebSourcePath="$(WORKING_DIR)\NetModel\web" /p:GENERATOR="$(KBGENERATOR)"
    
   displayName: 'Deploy Webapp'
