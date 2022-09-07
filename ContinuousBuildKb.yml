@@ -57,8 +57,7 @@ steps:
    
    $(MSBUILD) "$(BL_PATH)\DeploymentTargets\Azure\deploy.msbuild" /t:Deploy 
    /p:AZURE_PUBLISH_SETTINGS="$(PUBLISH_SETTINGS)" 
-   /p:APPLICATION_KEY="$(APPLICATION_KEY)" /p:INCLUDE_GAM="False" /p:INCLUDE_GXFLOW_BACKOFFICE="True" 
-   /p:APP_UPDATE="NONE" /p:ENABLE_KBN="False" /p:PACKAGE_FORMAT="Automatic" /p:LANGUAGE="41" /p:GENERATOR=".NET" /p:APPLICATION_NAME="$(DEPLOY_NAME)" 
+   /p:APPLICATION_KEY="$(APPLICATION_KEY)" /p:LANGUAGE="41" /p:GENERATOR=".NET" /p:APPLICATION_NAME="$(DEPLOY_NAME)" 
    /p:DEPLOY_PATH="$(WORKING_DIR)\NetModel\Deploy\AZURE\$(DEPLOYMENT_UNIT)\$(DEPLOY_NAME)" 
    /p:GX_PROGRAM_DIR="$(BL_PATH)" 
    /p:DeploySource="$(WORKING_DIR)\NetModel\Deploy\AZURE\$(DEPLOY_NAME).zip" /p:CreateCloudPackage="false" 
