@@ -53,8 +53,7 @@ steps:
 
    $(MSBUILD) /ToolsVersion:4.0 "$(WORKING_DIR)\NetModel\web\$(DEPLOY_NAME).gxdproj" /t:CreatePackage 
    /p:GX_PROGRAM_DIR="$(BL_PATH)" /p:AZURE_PUBLISH_SETTINGS="$(PUBLISH_SETTINGS)" 
-   /p:APPLICATION_KEY="$(APPLICATION_KEY)" /p:INCLUDE_GAM="False" /p:INCLUDE_GXFLOW_BACKOFFICE="True" 
-   /p:APP_UPDATE="NONE" /p:ENABLE_KBN="False" /p:PACKAGE_FORMAT="Automatic"
+   /p:APPLICATION_KEY="$(APPLICATION_KEY)"
    
    $(MSBUILD) "$(BL_PATH)\DeploymentTargets\Azure\deploy.msbuild" /t:Deploy 
    /p:AZURE_PUBLISH_SETTINGS="$(PUBLISH_SETTINGS)" 
