@@ -57,14 +57,13 @@ steps:
    
    $(MSBUILD) "$(BL_PATH)\DeploymentTargets\Azure\deploy.msbuild" /t:Deploy 
    /p:AZURE_PUBLISH_SETTINGS="$(PUBLISH_SETTINGS)" 
-   /p:APPLICATION_KEY="$(APPLICATION_KEY)" /p:LANGUAGE="41" /p:GENERATOR=".NET" /p:APPLICATION_NAME="$(DEPLOY_NAME)" 
+   /p:APPLICATION_KEY="$(APPLICATION_KEY)" /p:APPLICATION_NAME="$(DEPLOY_NAME)" 
    /p:DEPLOY_PATH="$(WORKING_DIR)\NetModel\Deploy\AZURE\$(DEPLOYMENT_UNIT)\$(DEPLOY_NAME)" 
-   /p:GX_PROGRAM_DIR="$(BL_PATH)" 
-   /p:DeploySource="$(WORKING_DIR)\NetModel\Deploy\AZURE\$(DEPLOY_NAME).zip" /p:CreateCloudPackage="false" 
-   /p:KBPath=$(WORKING_DIR) /p:KBEnvironment=".NET" /p:KBVersion="ActualizacionAmbiente2" /p:DeploymentUnit="$(DEPLOYMENT_UNIT)" 
-   /p:ProjectName="$(DEPLOY_NAME)" /p:TargetId="AZURE" /p:ObjectNames="DeploymentUnitCategory:$(DEPLOYMENT_UNIT)" /p:ApplicationServer="Kestrel" 
+   /p:GX_PROGRAM_DIR="$(BL_PATH)" /p:DeploySource="$(WORKING_DIR)\NetModel\Deploy\AZURE\$(DEPLOY_NAME).zip" 
+   /p:CreateCloudPackage="false" /p:KBPath=$(WORKING_DIR) /p:KBEnvironment=".NET" /p:KBVersion="ActualizacionAmbiente2" 
+   /p:DeploymentUnit="$(DEPLOYMENT_UNIT)" /p:ProjectName="$(DEPLOY_NAME)" /p:TargetId="AZURE" /p:ObjectNames="DeploymentUnitCategory:$(DEPLOYMENT_UNIT)"
    /p:DEPLOY_TARGETS="$(BL_PATH)\DeploymentTargets\Azure\azure.targets" 
    /p:DeployFullPath="$(WORKING_DIR)\NetModel\Deploy\AZURE\$(DEPLOYMENT_UNIT)\$(DEPLOY_NAME)" 
-   /p:WebSourcePath="$(WORKING_DIR)\NetModel\web"
+   /p:WebSourcePath="$(WORKING_DIR)\NetModel\web" 
    
   displayName: 'Deploy Webapp'
