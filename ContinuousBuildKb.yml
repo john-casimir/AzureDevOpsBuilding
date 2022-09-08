@@ -45,7 +45,7 @@ jobs:
 
   - job: BuildAndDeploy
     dependsOn: CheckoutOrUpdate
-    condition: success()
+    condition: always()
     steps:
       - script: $(MSBUILD) "$(BL_PATH)\teamdev.Msbuild" -target:Build /p:WorkingDirectory=$(WORKING_DIR)
 
