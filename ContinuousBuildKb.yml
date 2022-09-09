@@ -17,7 +17,7 @@ variables:
   KBGENERATOR: $(generator)
   DEPLOY_NAME: $(deploymentUnit)$(Build.BuildNumber)
   APPLICATION_KEY: $(encriptKey)
-  FORCE_REBUILD: $(forceRebuild)
+  FORCE_REBUILD: ${{forceRebuild}}
 
 # Scheduled triggers. Can also be setup through UI, which takes precendence.
 schedules:
