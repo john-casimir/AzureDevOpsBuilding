@@ -53,7 +53,7 @@ jobs:
     dependsOn: CheckoutOrUpdate
     variables:
       updateCount: $[ dependencies.CheckoutOrUpdate.outputs['CreateOrUpdateKB.updateCount'] ]  
-    condition: or(and(succeeded(), gt($(updateCount), '0')),eq(variables['forceRebuild'], 'true'))
+    condition: or(and(succeeded(), gt($[ dependencies.CheckoutOrUpdate.outputs['CreateOrUpdateKB.updateCount'] ], '0')),eq(variables['forceRebuild'], 'true'))
     steps:
       - script: $(MSBUILD) "$(BL_PATH)\teamdev.Msbuild" -target:Build /p:WorkingDirectory=$(WORKING_DIR) 
         displayName: Build KB
