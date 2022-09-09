@@ -40,7 +40,7 @@ jobs:
       - script: >
           $(MSBUILD) "$(BL_PATH)\AzureCICD.msbuild" -target:CreateOrUpdateKB /p:WorkingDirectory=$(WORKING_DIR) /p:CreateDbInKbFolder=True
           /p:DbaseName=$(KB_ALIAS) /p:DbaseUseIntegratedSecurity=True /p:ServerUrl=$(GXSERVER_URL) /p:ServerKbAlias=$(KB_ALIAS) 
-          /p:ServerUsername=$(GXSERVER_USER) /p:ServerPassword=$(GXSERVER_PASS) | Out-File $(WORKING_DIR)\update.txt
+          /p:ServerUsername=$(GXSERVER_USER) /p:ServerPassword=$(GXSERVER_PASS) >> $(WORKING_DIR)\update.txt
         displayName: CreateOrUpdateKB
 
 
