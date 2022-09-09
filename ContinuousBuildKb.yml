@@ -44,7 +44,7 @@ jobs:
           
           set /A updateCount=<"$(WORKING_DIR)/updateCount.txt"
 
-          echo %updateCount%
+          echo "%updateCount%"
         displayName: CreateOrUpdateKB
 
 
