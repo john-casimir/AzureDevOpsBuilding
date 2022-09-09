@@ -40,7 +40,7 @@ jobs:
       - script: >
           $(MSBUILD) "$(BL_PATH)\AzureCICD.msbuild" -target:CreateOrUpdateKB /p:WorkingDirectory=$(WORKING_DIR) /p:CreateDbInKbFolder=True
           /p:DbaseName=$(KB_ALIAS) /p:DbaseUseIntegratedSecurity=True /p:ServerUrl=$(GXSERVER_URL) /p:ServerKbAlias=$(KB_ALIAS) 
-          /p:ServerUsername=$(GXSERVER_USER) /p:ServerPassword=$(GXSERVER_PASS)
+          /p:ServerUsername=$(GXSERVER_USER) /p:ServerPassword=$(GXSERVER_PASS) | Out-File $(WORKING_DIR)\update.txt
         displayName: CreateOrUpdateKB
 
 
@@ -48,7 +48,7 @@ jobs:
     dependsOn: CheckoutOrUpdate
     condition: or(and(succeeded(), gt(variables['updateCount'], '0')),eq(variables['forceRebuild'], 'true'))
     steps:
-      - script: $(MSBUILD) "$(BL_PATH)\teamdev.Msbuild" -target:Build /p:WorkingDirectory=$(WORKING_DIR) | Out-File $(WORKING_DIR)\update.txt
+      - script: $(MSBUILD) "$(BL_PATH)\teamdev.Msbuild" -target:Build /p:WorkingDirectory=$(WORKING_DIR) 
         displayName: Build KB
 
       - script: >
