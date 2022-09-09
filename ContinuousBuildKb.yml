@@ -17,7 +17,7 @@ variables:
   KBGENERATOR: $(generator)
   DEPLOY_NAME: $(deploymentUnit)$(Build.BuildNumber)
   APPLICATION_KEY: $(encriptKey)
-  FORCE_REBUILD: ${{forceRebuild}}
+  FORCE_REBUILD: $(forceRebuild)
 
 # Scheduled triggers. Can also be setup through UI, which takes precendence.
 schedules:
@@ -43,7 +43,7 @@ jobs:
           /p:DbaseName=$(KB_ALIAS) /p:DbaseUseIntegratedSecurity=True /p:ServerUrl=$(GXSERVER_URL) /p:ServerKbAlias=$(KB_ALIAS) 
           /p:ServerUsername=$(GXSERVER_USER) /p:ServerPassword=$(GXSERVER_PASS)
           
-          echo ##vso[task.setvariable variable=updateCount;isOutput=true]0
+          echo ##vso[task.setvariable variable=updateCount;isOutput=true]$(forceRebuild)
         name: CreateOrUpdateKB
 
 
