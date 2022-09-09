@@ -42,18 +42,17 @@ jobs:
           /p:DbaseName=$(KB_ALIAS) /p:DbaseUseIntegratedSecurity=True /p:ServerUrl=$(GXSERVER_URL) /p:ServerKbAlias=$(KB_ALIAS) 
           /p:ServerUsername=$(GXSERVER_USER) /p:ServerPassword=$(GXSERVER_PASS)
           
-          echo "##vso[task.setvariable variable=updateCount;isOutput=true]0"
+          echo ##vso[task.setvariable variable=updateCount;isOutput=true]0
 
           echo $(updateCount)
         displayName: CreateOrUpdateKB
+        name: CreateOrUpdateKB
 
 
 
   - job: BuildAndDeploy
     dependsOn: CheckoutOrUpdate
-    variables:
-      updateCount: $[ dependencies.CheckoutOrUpdate.outputs['CreateOrUpdateKB.updateCount'] ]  
-    condition: or(and(succeeded(), gt($[ dependencies.CheckoutOrUpdate.outputs['CreateOrUpdateKB.updateCount'] ], '0')),eq(variables['forceRebuild'], 'true'))
+    condition: or(and(succeeded(), gt(dependencies.CheckoutOrUpdate.outputs['CreateOrUpdateKB.updateCount'], '0')),eq(variables['forceRebuild'], 'true'))
     steps:
       - script: $(MSBUILD) "$(BL_PATH)\teamdev.Msbuild" -target:Build /p:WorkingDirectory=$(WORKING_DIR) 
         displayName: Build KB
