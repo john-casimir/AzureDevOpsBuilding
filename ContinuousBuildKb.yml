@@ -43,9 +43,8 @@ jobs:
           /p:ServerUsername=$(GXSERVER_USER) /p:ServerPassword=$(GXSERVER_PASS)
 
           echo "##vso[task.setvariable variable=updateCount;]$(type $(WORKING_DIR)/updateCount.txt)"
-
-          $(myVariable)
         displayName: CreateOrUpdateKB
+      - script: echo $(updateCount)
 
 
   - job: BuildAndDeploy
