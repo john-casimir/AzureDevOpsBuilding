@@ -51,7 +51,7 @@ jobs:
 
   - job: BuildAndDeploy
     dependsOn: CheckoutOrUpdate
-    condition: or(and(succeeded(), gt(variables['updateCount'], '0')),eq(variables['forceRebuild'], 'true'))
+    condition: or(and(succeeded(), gt($(updateCount), '0')),eq(variables['forceRebuild'], 'true'))
     steps:
       - script: $(MSBUILD) "$(BL_PATH)\teamdev.Msbuild" -target:Build /p:WorkingDirectory=$(WORKING_DIR) 
         displayName: Build KB
