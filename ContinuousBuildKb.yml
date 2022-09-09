@@ -41,6 +41,7 @@ jobs:
           $(MSBUILD) "$(BL_PATH)\AzureCICD.msbuild" -target:CreateOrUpdateKB /p:WorkingDirectory=$(WORKING_DIR) /p:CreateDbInKbFolder=True
           /p:DbaseName=$(KB_ALIAS) /p:DbaseUseIntegratedSecurity=True /p:ServerUrl=$(GXSERVER_URL) /p:ServerKbAlias=$(KB_ALIAS) 
           /p:ServerUsername=$(GXSERVER_USER) /p:ServerPassword=$(GXSERVER_PASS)
+          displayName: CreateOrUpdateKB
 
 
   - job: BuildAndDeploy
@@ -48,6 +49,7 @@ jobs:
     condition: succeeded()
     steps:
       - script: $(MSBUILD) "$(BL_PATH)\teamdev.Msbuild" -target:Build /p:WorkingDirectory=$(WORKING_DIR)
+        displayName: Build KB
 
       - script: >
           $(MSBUILD) "$(BL_PATH)\deploy.msbuild" /t:CreateDeploy /p:KBPath=$(WORKING_DIR);KBEnvironment=$(KBENVIRONMENT);DeploymentUnit=$(DEPLOYMENT_UNIT) 
@@ -57,11 +59,15 @@ jobs:
           /p:WebSourcePath="$(WORKING_DIR)\NetModel\web" /p:GX_PROGRAM_DIR="$(BL_PATH)" 
           /p:AZURE_PUBLISH_SETTINGS="$(PUBLISH_SETTINGS)" 
           /p:APPLICATION_KEY="$(APPLICATION_KEY)"
+        displayName: Create Deploy
 
+      - script: >  
           $(MSBUILD) /ToolsVersion:4.0 "$(WORKING_DIR)\NetModel\web\$(DEPLOY_NAME).gxdproj" /t:CreatePackage 
           /p:GX_PROGRAM_DIR="$(BL_PATH)" /p:AZURE_PUBLISH_SETTINGS="$(PUBLISH_SETTINGS)" 
           /p:APPLICATION_KEY="$(APPLICATION_KEY)"
-          
+        displayName: Create Package
+
+      - script: >
           $(MSBUILD) "$(BL_PATH)\DeploymentTargets\Azure\deploy.msbuild" /t:Deploy 
           /p:AZURE_PUBLISH_SETTINGS="$(PUBLISH_SETTINGS)" 
           /p:APPLICATION_KEY="$(APPLICATION_KEY)" /p:APPLICATION_NAME="$(DEPLOY_NAME)" 
@@ -72,3 +78,4 @@ jobs:
           /p:DEPLOY_TARGETS="$(BL_PATH)\DeploymentTargets\Azure\azure.targets" 
           /p:DeployFullPath="$(WORKING_DIR)\NetModel\Deploy\AZURE\$(DEPLOYMENT_UNIT)\$(DEPLOY_NAME)" 
           /p:WebSourcePath="$(WORKING_DIR)\NetModel\web" /p:GENERATOR="$(KBGENERATOR)"
+            displayName: Deploy to WebApp
