@@ -46,9 +46,9 @@ jobs:
 
   - job: BuildAndDeploy
     dependsOn: CheckoutOrUpdate
-    condition: succeeded()
+    condition: or(and(succeeded(), gt(variables['updateCount'], '0')),eq(variables['forceRebuild'], 'true'))
     steps:
-      - script: $(MSBUILD) "$(BL_PATH)\teamdev.Msbuild" -target:Build /p:WorkingDirectory=$(WORKING_DIR)
+      - script: $(MSBUILD) "$(BL_PATH)\teamdev.Msbuild" -target:Build /p:WorkingDirectory=$(WORKING_DIR) | Out-File $(WORKING_DIR)\update.txt
         displayName: Build KB
 
       - script: >
@@ -79,3 +79,4 @@ jobs:
           /p:DeployFullPath="$(WORKING_DIR)\NetModel\Deploy\AZURE\$(DEPLOYMENT_UNIT)\$(DEPLOY_NAME)" 
           /p:WebSourcePath="$(WORKING_DIR)\NetModel\web" /p:GENERATOR="$(KBGENERATOR)"
         displayName: Deploy to WebApp
+      
