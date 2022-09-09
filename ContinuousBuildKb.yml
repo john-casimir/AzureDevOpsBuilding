@@ -42,7 +42,7 @@ jobs:
           /p:DbaseName=$(KB_ALIAS) /p:DbaseUseIntegratedSecurity=True /p:ServerUrl=$(GXSERVER_URL) /p:ServerKbAlias=$(KB_ALIAS) 
           /p:ServerUsername=$(GXSERVER_USER) /p:ServerPassword=$(GXSERVER_PASS)
           
-      - script: type "$(WORKING_DIR)/updateCount.txt"
+          type "$(WORKING_DIR)\pdateCount.txt"
 
         displayName: CreateOrUpdateKB
 
