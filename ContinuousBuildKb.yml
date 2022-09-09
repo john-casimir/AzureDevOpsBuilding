@@ -7,6 +7,7 @@ variables:
   MSBUILD: $(msbuildpath)
   BL_PATH: $(genexus)
   WORKING_DIR: $(kbpath)
+  KB_ALIAS: $(kbalias)
   GXSERVER_URL: $(serverurl)
   GXSERVER_USER: $(serveruser)
   GXSERVER_PASS: $(password)
