@@ -41,7 +41,7 @@ jobs:
           $(MSBUILD) "$(BL_PATH)\AzureCICD.msbuild" -target:CreateOrUpdateKB /p:WorkingDirectory=$(WORKING_DIR) /p:CreateDbInKbFolder=True
           /p:DbaseName=$(KB_ALIAS) /p:DbaseUseIntegratedSecurity=True /p:ServerUrl=$(GXSERVER_URL) /p:ServerKbAlias=$(KB_ALIAS) 
           /p:ServerUsername=$(GXSERVER_USER) /p:ServerPassword=$(GXSERVER_PASS)
-          displayName: CreateOrUpdateKB
+        displayName: CreateOrUpdateKB
 
 
   - job: BuildAndDeploy
@@ -78,4 +78,4 @@ jobs:
           /p:DEPLOY_TARGETS="$(BL_PATH)\DeploymentTargets\Azure\azure.targets" 
           /p:DeployFullPath="$(WORKING_DIR)\NetModel\Deploy\AZURE\$(DEPLOYMENT_UNIT)\$(DEPLOY_NAME)" 
           /p:WebSourcePath="$(WORKING_DIR)\NetModel\web" /p:GENERATOR="$(KBGENERATOR)"
-            displayName: Deploy to WebApp
+        displayName: Deploy to WebApp
