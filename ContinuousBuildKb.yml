@@ -44,7 +44,7 @@ jobs:
 
           echo "##vso[task.setvariable variable=updateCount;]$(type $(WORKING_DIR)/updateCount.txt)"
 
-          echo Saved count $(updateCount)
+          echo 'Saveed count $(myVariable)'
         displayName: CreateOrUpdateKB
 
 
