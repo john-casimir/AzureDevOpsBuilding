@@ -17,7 +17,7 @@ variables:
   KBGENERATOR: $(generator)
   DEPLOY_NAME: $(deploymentUnit)$(Build.BuildNumber)
   APPLICATION_KEY: $(encriptKey)
-  FORCE_REBUILD: $(forceRebuild)
+  FORCE_REBUILD: $[forceRebuild]
 
 # Scheduled triggers. Can also be setup through UI, which takes precendence.
 schedules:
@@ -50,7 +50,7 @@ jobs:
 
   - job: BuildAndDeploy
     dependsOn: CheckoutOrUpdate
-    condition: or(and(succeeded(), eq(dependencies.CheckoutOrUpdate.outputs['CreateOrUpdateKB.updateCount'], '0')),eq(variables.FORCE_REBUILD, 'true'))
+    condition: or(and(succeeded(), eq(dependencies.CheckoutOrUpdate.outputs['CreateOrUpdateKB.updateCount'], '0')),eq($(FORCE_REBUILD), 'true'))
     steps:
       - script: $(MSBUILD) "$(BL_PATH)\teamdev.Msbuild" -target:Build /p:WorkingDirectory=$(WORKING_DIR) 
         name: BuildKB
