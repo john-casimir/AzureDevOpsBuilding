@@ -44,7 +44,7 @@ jobs:
           
           set /A updateCount=<"$(WORKING_DIR)/updateCount.txt"
 
-          echo "##vso[task.setvariable variable=updateCount;]$%updateCount%"
+          echo %updateCount%
         displayName: CreateOrUpdateKB
 
 
