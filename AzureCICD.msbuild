@@ -73,6 +73,10 @@
 			<Output TaskParameter="ObjectsToUpdateQuantity" PropertyName="UpdatedObjectsCount"/>
 		</UpdateFromServer>
 		<CloseKnowledgeBase/>
+		<WriteLinesToFile
+            File="$(WorkingDirectory)\updateCount.txt"
+            Lines="$(UpdatedObjectsCount)"
+            Overwrite="true"/>
 	</Target>
 
 </Project>
