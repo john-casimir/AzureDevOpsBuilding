@@ -93,7 +93,7 @@ jobs:
     dependsOn: BuildAndDeploy
     condition: succeeded()
     steps:
-      - bash: | 
+      - script: | 
           if [ ! -d "\GeneXusBuild" ] ; then
             git clone https://$(GIT_USER):$(GIT_PASSWORD)@$(GIT_REPO)
           else
