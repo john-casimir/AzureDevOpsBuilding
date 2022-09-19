@@ -95,10 +95,10 @@ jobs:
     steps:
       - script: >
           git clone "https://$(GIT_USER):$(GIT_PASSWORD)@$(GIT_REPO)" "$(WORKING_DIR)"
-          name: CloneRepo
+        name: CloneRepo
       
       - script: >
           git add "$(WORKING_DIR)\NetModel"
         
           git commit -m "Commit build changes"
-          name: AddCommit
+        name: AddCommit
