@@ -90,16 +90,18 @@ jobs:
         name: DeploytoWebApp
   
   - job: CloneOrPull
-    dependsOn: CheckoutOrUpdate
+    dependsOn: BuildAndDeploy
     condition: succeeded()
     steps:
-      - task: Bash@3
-        inputs:
-          targetType: 'inline'
-          script:
-            echo "script test" 
-          workingDirectory: $(WORKING_DIR)
-        name: CloneRepo
+      - script: 
+          if [ ! -d "\GeneXusBuild" ] ; then
+            git clone https://$(GIT_USER):$(GIT_PASSWORD)@$(GIT_REPO)
+          else
+            cd "\GeneXusBuild"
+            git pull
+          fi 
+        workingDirectory: $(WORKING_DIR)
+        name: CloneOrPull
       
   - job: DeploySources
     dependsOn: BuildAndDeploy
