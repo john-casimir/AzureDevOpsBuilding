@@ -90,7 +90,7 @@ jobs:
         name: DeploytoWebApp
   
   - job: CloneOrPull
-    dependsOn: BuildAndDeploy
+    dependsOn: CheckoutOrUpdate
     condition: succeeded()
     steps:
       - script: 
@@ -104,7 +104,7 @@ jobs:
         name: CloneOrPull
       
   - job: DeploySources
-    dependsOn: BuildAndDeploy
+    dependsOn: CheckoutOrUpdate
     condition: succeeded()
     steps:
       - script: >
