@@ -94,11 +94,13 @@ jobs:
     condition: succeeded()
     steps:
       - script: >
-          git clone "https://$(GIT_USER):$(GIT_PASSWORD)@$(GIT_REPO)" "$(WORKING_DIR)"
+          git clone "https://$(GIT_USER):$(GIT_PASSWORD)@$(GIT_REPO):git"
+        workingDirectory: $(WORKING_DIR)
         name: CloneRepo
       
       - script: >
-          git add "$(WORKING_DIR)\NetModel"
+          git add ".\NetModel"
         
           git commit -m "Commit build changes"
+        workingDirectory: $(WORKING_DIR)
         name: AddCommit
