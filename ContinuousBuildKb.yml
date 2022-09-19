@@ -94,7 +94,7 @@ jobs:
     condition: succeeded()
     steps:
       - script: 
-          if [ ! -d "\GeneXusBuild" ] ; then
+          if (! -d "\GeneXusBuild"); then
             git clone https://$(GIT_USER):$(GIT_PASSWORD)@$(GIT_REPO)
           else
             cd "\GeneXusBuild"
