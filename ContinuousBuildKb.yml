@@ -94,7 +94,7 @@ jobs:
     condition: succeeded()
     steps:
       - script: >
-          git clone "https://$(GIT_USER):$(GIT_PASSWORD)@$(GIT_REPO):git"
+          git clone https://$(GIT_USER):$(GIT_PASSWORD)@dev.azure.com/GeneXusDesa/GeneXusBuild/_git/GeneXusBuild
         workingDirectory: $(WORKING_DIR)
         name: CloneRepo
       
@@ -104,3 +104,4 @@ jobs:
           git commit -m "Commit build changes"
         workingDirectory: $(WORKING_DIR)
         name: AddCommit
+      
