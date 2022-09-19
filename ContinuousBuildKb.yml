@@ -94,7 +94,7 @@ jobs:
     condition: succeeded()
     steps:
       - script: 
-          if exist ".\GeneXusBuild")(
+          if exist ".\GeneXusBuild"(
             cd "\GeneXusBuild"
             git pull
           )else( 
