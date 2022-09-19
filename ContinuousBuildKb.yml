@@ -89,11 +89,7 @@ jobs:
           /p:WebSourcePath="$(WORKING_DIR)\NetModel\web" /p:GENERATOR="$(KBGENERATOR)"
         name: DeploytoWebApp
   
-  - job: CloneorPull
-    dependsOn: BuildAndDeploy
-    condition:    
-
-  - job: DeploySources
+  - job: Clone
     dependsOn: BuildAndDeploy
     condition: succeeded()
     steps:
@@ -102,10 +98,23 @@ jobs:
         workingDirectory: $(WORKING_DIR)
         name: CloneRepo
       
+
+
+  - job: DeploySources
+    dependsOn: BuildAndDeploy
+    condition: succeeded()
+    steps:
+      - script: >
+          git pull
+        workingDirectory: $(WORKING_DIR)\GeneXusBuild
+        name: CloneRepo
+      
       - script: >
           git add ".\NetModel"
         
           git commit -m "Commit build $(Build.BuildNumber)"
-        workingDirectory: $(WORKING_DIR)
-        name: AddCommit
+
+          git push
+        workingDirectory: $(WORKING_DIR)\GeneXusBuild
+        name: CommitPush
       
