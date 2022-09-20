@@ -21,7 +21,6 @@ variables:
   GIT_USER: $(gituser)
   GIT_PASSWORD: $(gitpassword) #This could alternatively be a PAT
   GIT_REPO: $(gitrepo)
-  GIT_DIR: $(gitdir)
 
 # Scheduled triggers. Can also be setup through UI, which takes precendence.
 schedules:
