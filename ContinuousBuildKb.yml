@@ -110,11 +110,11 @@ jobs:
     condition: succeeded()
     steps:
       - script: >
-          xcopy /y \NetModel \GeneXusBuild
+          xcopy /E /I /Y "$(WORKING_DIR)\NetModel" "$(WORKING_DIR)\GeneXusBuild"
 
           cd GeneXusBuild
 
-          git add "\NetModel"
+          git add *
         
           git commit -m "Commit build $(Build.BuildNumber)"
 
