@@ -103,7 +103,7 @@ jobs:
             cd GeneXusBuild
             git checkout -b DeploySources
           )
-        workingDirectory: $(GIT_DIR)
+        workingDirectory: $(WORKING_DIR)
         name: CloneOrPull
       
   - job: DeploySources
@@ -116,6 +116,6 @@ jobs:
           git commit -m "Commit build $(Build.BuildNumber)"
 
           git push -u origin DeploySources
-        workingDirectory: $(GIT_DIR)\GeneXusBuild
+        workingDirectory: $(WORKING_DIR)\GeneXusBuild
         name: CommitPush
       
