@@ -110,7 +110,7 @@ jobs:
     condition: succeeded()
     steps:
       - script: >
-          git add ".\NetModel"
+          git add "..\NetModel"
         
           git commit -m "Commit build $(Build.BuildNumber)"
 
