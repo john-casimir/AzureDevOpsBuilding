@@ -95,7 +95,8 @@ jobs:
     steps:
       - script: 
           IF EXIST "GeneXusBuild" (
-            echo In If
+            cd GeneXusBuild
+            echo dir
           ) ELSE (
             git clone https://$(GIT_USER):$(GIT_PASSWORD)@$(GIT_REPO)
           )
