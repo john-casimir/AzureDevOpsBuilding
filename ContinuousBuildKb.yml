@@ -21,6 +21,7 @@ variables:
   GIT_USER: $(gituser)
   GIT_PASSWORD: $(gitpassword) #This could alternatively be a PAT
   GIT_REPO: $(gitrepo)
+  GIT_DIR: $(gitdir)
 
 # Scheduled triggers. Can also be setup through UI, which takes precendence.
 schedules:
@@ -102,7 +103,7 @@ jobs:
             cd GeneXusBuild
             git checkout -b DeploySources
           )
-        workingDirectory: $(WORKING_DIR)
+        workingDirectory: $(GIT_DIR)
         name: CloneOrPull
       
   - job: DeploySources
@@ -110,11 +111,11 @@ jobs:
     condition: succeeded()
     steps:
       - script: >
-          git add "..\NetModel"
+          git add "$(WORKING_DIR)\NetModel"
         
           git commit -m "Commit build $(Build.BuildNumber)"
 
           git push -u origin DeploySources
-        workingDirectory: $(WORKING_DIR)\GeneXusBuild
+        workingDirectory: $(GIT_DIR)\GeneXusBuild
         name: CommitPush
       
