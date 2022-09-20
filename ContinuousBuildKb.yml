@@ -96,7 +96,7 @@ jobs:
       - script: |
           IF EXIST "GeneXusBuild" (
             cd GeneXusBuild
-            git pull DeploySources
+            git pull
           ) ELSE (
             git clone https://$(GIT_USER):$(GIT_PASSWORD)@$(GIT_REPO)
             cd GeneXusBuild
