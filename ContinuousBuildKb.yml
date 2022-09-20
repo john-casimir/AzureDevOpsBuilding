@@ -96,6 +96,7 @@ jobs:
       - script: |
           IF EXIST "GeneXusBuild" (
             cd GeneXusBuild
+            git ls-remote
             git checkout refs/heads/master
             git pull
           ) ELSE (
