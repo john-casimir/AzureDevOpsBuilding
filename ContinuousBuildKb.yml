@@ -90,7 +90,7 @@ jobs:
         name: DeploytoWebApp
   
   - job: CloneOrPull
-    dependsOn: BuildAndDeploy
+    dependsOn: CheckoutOrUpdate
     condition: succeeded()
     steps:
       - script: |
@@ -100,7 +100,9 @@ jobs:
           ) ELSE (
             git clone https://$(GIT_USER):$(GIT_PASSWORD)@$(GIT_REPO)
             cd GeneXusBuild
-            git checkout -b DeploySources
+            IF NOT [`git branch --list DeploySources`](
+              git checkout -b DeploySources
+            )
           )
         workingDirectory: $(WORKING_DIR)
         name: CloneOrPull
