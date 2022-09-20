@@ -100,9 +100,7 @@ jobs:
           ) ELSE (
             git clone https://$(GIT_USER):$(GIT_PASSWORD)@$(GIT_REPO)
             cd GeneXusBuild
-            git checkout -b main
-            git commit -m "initial commit"
-            git push origin main
+            git checkout -b DeploySources
           )
         workingDirectory: $(WORKING_DIR)
         name: CloneOrPull
@@ -116,7 +114,7 @@ jobs:
         
           git commit -m "Commit build $(Build.BuildNumber)"
 
-          git push
+          git push -u origin DeploySources
         workingDirectory: $(WORKING_DIR)\GeneXusBuild
         name: CommitPush
       
