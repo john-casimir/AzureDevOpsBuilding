@@ -96,7 +96,7 @@ jobs:
       - script: |
           IF EXIST "GeneXusBuild" (
             cd GeneXusBuild
-            git ls-remote origin
+            git ls-remote
           ) ELSE (
             git clone https://$(GIT_USER):$(GIT_PASSWORD)@$(GIT_REPO)
             git checkout -b main
