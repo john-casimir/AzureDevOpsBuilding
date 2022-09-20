@@ -99,6 +99,7 @@ jobs:
             git ls-remote
           ) ELSE (
             git clone https://$(GIT_USER):$(GIT_PASSWORD)@$(GIT_REPO)
+            cd GeneXusBuild
             git checkout -b main
             git push origin main
           )
