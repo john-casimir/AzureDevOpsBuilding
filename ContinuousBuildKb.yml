@@ -94,9 +94,9 @@ jobs:
     condition: succeeded()
     steps:
       - script: 
-          IF EXIST ".\GeneXusBuild" (
+          IF EXIST "GeneXusBuild" (
             cd "GeneXusBuild"
-              git pull	
+            git pull	
           ) ELSE (
             git clone https://$(GIT_USER):$(GIT_PASSWORD)@$(GIT_REPO)
           )
