@@ -106,7 +106,7 @@ jobs:
         name: CloneOrPull
       
   - job: DeploySources
-    dependsOn: CheckoutOrUpdate
+    dependsOn: CloneOrPull
     condition: succeeded()
     steps:
       - script: >
