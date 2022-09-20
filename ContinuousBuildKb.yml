@@ -97,8 +97,8 @@ jobs:
           IF EXIST "GeneXusBuild" (
             cd GeneXusBuild
             git ls-remote
-            git checkout refs/heads/master
-            git pull
+            #git checkout refs/heads/master
+            #git pull
           ) ELSE (
             git clone https://$(GIT_USER):$(GIT_PASSWORD)@$(GIT_REPO)
           )
