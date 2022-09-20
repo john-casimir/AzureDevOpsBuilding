@@ -99,6 +99,8 @@ jobs:
             git ls-remote origin
           ) ELSE (
             git clone https://$(GIT_USER):$(GIT_PASSWORD)@$(GIT_REPO)
+            git checkout -b main
+            git push origin main
           )
         workingDirectory: $(WORKING_DIR)
         name: CloneOrPull
