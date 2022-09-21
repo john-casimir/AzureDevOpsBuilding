@@ -96,7 +96,7 @@ jobs:
         name: DeploytoWebApp
   
   - job: CloneOrPull
-    dependsOn: CheckoutOrUpdate
+    dependsOn: BuildAndDeploy
     condition: succeeded()
     steps:
       - script: |
