@@ -100,7 +100,7 @@ jobs:
     condition: succeeded()
     steps:
       - script: |
-          IF EXIST "GeneXusBuild" (
+          IF EXIST "$(GIT_BRANCH)" (
             cd GeneXusBuild
             git pull
           ) ELSE (
