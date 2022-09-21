@@ -104,7 +104,7 @@ jobs:
             cd GeneXusBuild
             git pull
           ) ELSE (
-            git clone https://$(GIT_USER):$(GIT_PASSWORD)@$(GIT_REPO)
+            git clone https://$(GIT_USER):$(GIT_PASSWORD)@$(GIT_REPO) /$(GIT_BRANCH)
           )
         workingDirectory: $(WORKING_DIR)
         name: CloneOrPull
