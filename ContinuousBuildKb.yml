@@ -59,6 +59,10 @@ jobs:
     dependsOn: CheckoutOrUpdate
     condition: or(and(succeeded(), gt(dependencies.CheckoutOrUpdate.outputs['CreateOrUpdateKB.updateCount'], '0')),eq(variables['forceRebuild'], 'true'))
     steps:
+      - script: rmdir $(KB_PATH)\NetModel /s /q
+        condition: eq(variables['forceRebuild'], 'true')
+        name: CleanBuildDir
+
       - script: $(MSBUILD) "$(BL_PATH)\AzureCICD.Msbuild" -target:Build /p:WorkingDirectory=$(KB_PATH) /p:ForceRebuild=$(forceRebuild)
         name: BuildKB
 
