@@ -6,7 +6,8 @@
 variables:
   MSBUILD: $(msbuildpath)
   BL_PATH: $(genexus)
-  WORKING_DIR: $(kbpath)
+  WORKING_DIR: $(workingDir)
+  KB_PATH: $(kbpath)
   KB_ALIAS: $(kbalias)
   GXSERVER_URL: $(serverurl)
   GXSERVER_USER: $(serveruser)
@@ -21,6 +22,7 @@ variables:
   GIT_USER: $(gituser)
   GIT_PASSWORD: $(gitpassword) #This could alternatively be a PAT
   GIT_REPO: $(gitrepo)
+  GIT_BRANCH: $(gitbranch) #Branch must exist. Content will be overwritten
 
 # Scheduled triggers. Can also be setup through UI, which takes precendence.
 schedules:
@@ -42,11 +44,11 @@ jobs:
     condition: always()
     steps:
       - script: >
-          $(MSBUILD) "$(BL_PATH)\AzureCICD.msbuild" -target:CreateOrUpdateKB /p:WorkingDirectory=$(WORKING_DIR) /p:CreateDbInKbFolder=True
+          $(MSBUILD) "$(BL_PATH)\AzureCICD.msbuild" -target:CreateOrUpdateKB /p:WorkingDirectory=$(KB_PATH) /p:CreateDbInKbFolder=True
           /p:DbaseName=$(KB_ALIAS) /p:DbaseUseIntegratedSecurity=True /p:ServerUrl=$(GXSERVER_URL) /p:ServerKbAlias=$(KB_ALIAS) 
           /p:ServerUsername=$(GXSERVER_USER) /p:ServerPassword=$(GXSERVER_PASS)
           
-          set /p updateCount=<"$(WORKING_DIR)\updateCount.txt"
+          set /p updateCount=<"$(KB_PATH)\updateCount.txt"
 
           echo ##vso[task.setvariable variable=updateCount;isOutput=true]%updateCount%
         name: CreateOrUpdateKB
@@ -57,21 +59,21 @@ jobs:
     dependsOn: CheckoutOrUpdate
     condition: or(and(succeeded(), gt(dependencies.CheckoutOrUpdate.outputs['CreateOrUpdateKB.updateCount'], '0')),eq(variables['forceRebuild'], 'true'))
     steps:
-      - script: $(MSBUILD) "$(BL_PATH)\AzureCICD.Msbuild" -target:Build /p:WorkingDirectory=$(WORKING_DIR) /p:ForceRebuild=$(forceRebuild)
+      - script: $(MSBUILD) "$(BL_PATH)\AzureCICD.Msbuild" -target:Build /p:WorkingDirectory=$(KB_PATH) /p:ForceRebuild=$(forceRebuild)
         name: BuildKB
 
       - script: >
-          $(MSBUILD) "$(BL_PATH)\deploy.msbuild" /t:CreateDeploy /p:KBPath=$(WORKING_DIR);KBEnvironment=$(KBENVIRONMENT);DeploymentUnit=$(DEPLOYMENT_UNIT) 
+          $(MSBUILD) "$(BL_PATH)\deploy.msbuild" /t:CreateDeploy /p:KBPath=$(KB_PATH);KBEnvironment=$(KBENVIRONMENT);DeploymentUnit=$(DEPLOYMENT_UNIT) 
           /p:ProjectName=$(DEPLOY_NAME) /p:TargetId="AZURE" /p:ObjectNames="DeploymentUnitCategory:$(DEPLOYMENT_UNIT)"
           /p:DEPLOY_TARGETS="$(BL_PATH)\DeploymentTargets\Azure\azure.targets" 
-          /p:DeployFullPath="$(WORKING_DIR)\NetModel\Deploy\AZURE\$(DEPLOYMENT_UNIT)\$(DEPLOY_NAME)" 
-          /p:WebSourcePath="$(WORKING_DIR)\NetModel\web" /p:GX_PROGRAM_DIR="$(BL_PATH)" 
+          /p:DeployFullPath="$(KB_PATH)\NetModel\Deploy\AZURE\$(DEPLOYMENT_UNIT)\$(DEPLOY_NAME)" 
+          /p:WebSourcePath="$(KB_PATH)\NetModel\web" /p:GX_PROGRAM_DIR="$(BL_PATH)" 
           /p:AZURE_PUBLISH_SETTINGS="$(PUBLISH_SETTINGS)" 
           /p:APPLICATION_KEY="$(APPLICATION_KEY)"
         name: CreateDeploy
 
       - script: >  
-          $(MSBUILD) /ToolsVersion:4.0 "$(WORKING_DIR)\NetModel\web\$(DEPLOY_NAME).gxdproj" /t:CreatePackage 
+          $(MSBUILD) /ToolsVersion:4.0 "$(KB_PATH)\NetModel\web\$(DEPLOY_NAME).gxdproj" /t:CreatePackage 
           /p:GX_PROGRAM_DIR="$(BL_PATH)" /p:AZURE_PUBLISH_SETTINGS="$(PUBLISH_SETTINGS)" 
           /p:APPLICATION_KEY="$(APPLICATION_KEY)"
         name: CreatePackage
@@ -80,13 +82,13 @@ jobs:
           $(MSBUILD) "$(BL_PATH)\DeploymentTargets\Azure\deploy.msbuild" /t:Deploy 
           /p:AZURE_PUBLISH_SETTINGS="$(PUBLISH_SETTINGS)" 
           /p:APPLICATION_KEY="$(APPLICATION_KEY)" /p:APPLICATION_NAME="$(DEPLOY_NAME)" 
-          /p:DEPLOY_PATH="$(WORKING_DIR)\NetModel\Deploy\AZURE\$(DEPLOYMENT_UNIT)\$(DEPLOY_NAME)" 
-          /p:GX_PROGRAM_DIR="$(BL_PATH)" /p:DeploySource="$(WORKING_DIR)\NetModel\Deploy\AZURE\$(DEPLOY_NAME).zip" 
-          /p:CreateCloudPackage="false" /p:KBPath=$(WORKING_DIR) /p:KBEnvironment="$(KBENVIRONMENT)" /p:KBVersion="ActualizacionAmbiente2" 
+          /p:DEPLOY_PATH="$(KB_PATH)\NetModel\Deploy\AZURE\$(DEPLOYMENT_UNIT)\$(DEPLOY_NAME)" 
+          /p:GX_PROGRAM_DIR="$(BL_PATH)" /p:DeploySource="$(KB_PATH)\NetModel\Deploy\AZURE\$(DEPLOY_NAME).zip" 
+          /p:CreateCloudPackage="false" /p:KBPath=$(KB_PATH) /p:KBEnvironment="$(KBENVIRONMENT)" /p:KBVersion="ActualizacionAmbiente2" 
           /p:DeploymentUnit="$(DEPLOYMENT_UNIT)" /p:ProjectName="$(DEPLOY_NAME)" /p:TargetId="AZURE" /p:ObjectNames="DeploymentUnitCategory:$(DEPLOYMENT_UNIT)"
           /p:DEPLOY_TARGETS="$(BL_PATH)\DeploymentTargets\Azure\azure.targets" 
-          /p:DeployFullPath="$(WORKING_DIR)\NetModel\Deploy\AZURE\$(DEPLOYMENT_UNIT)\$(DEPLOY_NAME)" 
-          /p:WebSourcePath="$(WORKING_DIR)\NetModel\web" /p:GENERATOR="$(KBGENERATOR)"
+          /p:DeployFullPath="$(KB_PATH)\NetModel\Deploy\AZURE\$(DEPLOYMENT_UNIT)\$(DEPLOY_NAME)" 
+          /p:WebSourcePath="$(KB_PATH)\NetModel\web" /p:GENERATOR="$(KBGENERATOR)"
         name: DeploytoWebApp
   
   - job: CloneOrPull
@@ -99,20 +101,16 @@ jobs:
             git pull
           ) ELSE (
             git clone https://$(GIT_USER):$(GIT_PASSWORD)@$(GIT_REPO)
-            cd GeneXusBuild
-            IF NOT [`git branch --list DeploySources`](
-              git checkout -b DeploySources
-            )
           )
         workingDirectory: $(WORKING_DIR)
         name: CloneOrPull
       
-  - job: DeploySources
+  - job: PushSourcesToGit
     dependsOn: CloneOrPull
     condition: succeeded()
     steps:
       - script: >
-          xcopy /E /I /Y "$(WORKING_DIR)\NetModel" "$(WORKING_DIR)\GeneXusBuild"
+          xcopy /E /I /Y "$(KB_PATH)\NetModel" "$(WORKING_DIR)\GeneXusBuild"
 
           cd GeneXusBuild
 
@@ -123,4 +121,3 @@ jobs:
           git push -u origin DeploySources
         workingDirectory: $(WORKING_DIR)
         name: CommitPush
-      
