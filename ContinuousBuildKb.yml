@@ -101,10 +101,10 @@ jobs:
     steps:
       - script: |
           IF EXIST "$(GIT_BRANCH)" (
-            cd GeneXusBuild
+            cd $(GIT_BRANCH)
             git pull
           ) ELSE (
-            git clone https://$(GIT_USER):$(GIT_PASSWORD)@$(GIT_REPO) /$(GIT_BRANCH)
+            git clone https://$(GIT_USER):$(GIT_PASSWORD)@$(GIT_REPO) $(WORKING_DIR)/$(GIT_BRANCH)
           )
         workingDirectory: $(WORKING_DIR)
         name: CloneOrPull
