@@ -104,7 +104,7 @@ jobs:
             cd $(GIT_BRANCH)
             git pull
           ) ELSE (
-            git clone https://$(GIT_USER):$(GIT_PASSWORD)@$(GIT_REPO) $(WORKING_DIR)/$(GIT_BRANCH)
+            git clone https://$(GIT_USER):$(GIT_PASSWORD)@$(GIT_REPO) $(WORKING_DIR)\$(GIT_BRANCH)
           )
         workingDirectory: $(WORKING_DIR)
         name: CloneOrPull
@@ -114,14 +114,14 @@ jobs:
     condition: succeeded()
     steps:
       - script: >
-          xcopy /E /I /Y "$(KB_PATH)\NetModel" "$(WORKING_DIR)\GeneXusBuild"
+          xcopy /E /I /Y "$(KB_PATH)\NetModel" "$(WORKING_DIR)\$(GIT_BRANCH)"
 
-          cd GeneXusBuild
+          cd $(GIT_BRANCH)
 
           git add *
         
           git commit -m "Commit build $(Build.BuildNumber)"
 
-          git push -u origin DeploySources
+          git push -u origin $(GIT_BRANCH)
         workingDirectory: $(WORKING_DIR)
         name: CommitPush
