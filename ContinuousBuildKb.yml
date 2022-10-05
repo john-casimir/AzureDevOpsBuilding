@@ -6,7 +6,6 @@
 variables:
   #Pipeline config variables:
   EXEC_AGENT: $(agent)
-  POLLING_TIME: "*/10 * * * *"
 
   #Environment variables: 
   MSBUILD: $(msbuildpath)
@@ -37,7 +36,7 @@ variables:
 
 # Scheduled triggers. Can also be setup through UI, which takes precendence.
 schedules:
-  - cron: $(POLLING_TIME)
+  - cron: "*/10 * * * *"
     displayName: Custom time trigger
     branches:
       include:
