@@ -4,21 +4,32 @@
 # https://aka.ms/yaml
 
 variables:
+  #Pipeline config variables:
+  EXEC_AGENT: $(agent)
+  POLLING_TIME: "*/10 * * * *"
+
+  #Environment variables: 
   MSBUILD: $(msbuildpath)
   BL_PATH: $(genexus)
   WORKING_DIR: $(workingDir)
-  KB_PATH: $(kbpath)
+  KB_PATH: $(workingDir)\$(kbalias)
+  
+  #KB Building variables:
   KB_ALIAS: $(kbalias)
   GXSERVER_URL: $(serverurl)
   GXSERVER_USER: $(serveruser)
   GXSERVER_PASS: $(password)
-  PUBLISH_SETTINGS: $(azurePublish)
-  DEPLOYMENT_UNIT: $(deploymentUnit)
   KBENVIRONMENT: $(environment)
   KBGENERATOR: $(generator)
+  FORCE_REBUILD: $(forceRebuild)
+  
+  #Deploy variables:
+  PUBLISH_SETTINGS: $(azurePublish)
+  DEPLOYMENT_UNIT: $(deploymentUnit)
   DEPLOY_NAME: $(deploymentUnit)$(Build.BuildNumber)
   APPLICATION_KEY: $(encriptKey)
-  FORCE_REBUILD: $(forceRebuild)
+  
+  #Code versioning variables:
   GIT_USER: $(gituser)
   GIT_PASSWORD: $(gitpassword) #This could alternatively be a PAT
   GIT_REPO: $(gitrepo)
@@ -26,8 +37,8 @@ variables:
 
 # Scheduled triggers. Can also be setup through UI, which takes precendence.
 schedules:
-  - cron: "*/10 * * * *"
-    displayName: every 10 min trigger
+  - cron: $(POLLING_TIME)
+    displayName: Custom time trigger
     branches:
       include:
         - main
@@ -37,7 +48,7 @@ trigger:
   - main
 
 pool:
-  name: $(agent)
+  name: $(EXEC_AGENT)
 
 jobs:
   - job: CheckoutOrUpdate
