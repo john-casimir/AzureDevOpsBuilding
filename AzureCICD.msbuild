@@ -1,11 +1,13 @@
 <Project DefaultTargets="SHOW" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<PropertyGroup>
 		<GX_INSTALL_DIR Condition=" '$(GX_INSTALL_DIR)' == '' ">$(MSBuildThisFileDirectory)</GX_INSTALL_DIR>
+		<CreatedKB>1</CreatedKB>
 	</PropertyGroup>
 
 	<Import Project="$(GX_INSTALL_DIR)GeneXus.Tasks.targets" Condition=" Exists('$(GX_INSTALL_DIR)GeneXus.Tasks.targets') "/>	
 	<Import Project="$(GX_INSTALL_DIR)\genexus.server.tasks.targets" Condition=" Exists('$(GX_INSTALL_DIR)GeneXus.Tasks.targets') "/>
-
+	<Import Project="$(GX_INSTALL_DIR)\Genexus.GAM.Tasks.targets" />
+	
 	<PropertyGroup>
 		<!--Input Parameters-->
 		<DoUpdate>True</DoUpdate>
@@ -27,6 +29,13 @@
 		<DbaseName></DbaseName>
 		<WorkingVersion></WorkingVersion>
 		<WorkingEnvironment></WorkingEnvironment>
+		<SQLInstance></SQLInstance>
+		<AppDB></AppDB>
+
+		<!-- KB GAM Properties -->
+		<IncludeFrontendObjects></IncludeFrontendObjects> 
+        <IncludeSDSamples></IncludeSDSamples> 
+        <UpdateMode></UpdateMode> 
 
 		<!-- Building Properties -->
 		<ForceRebuild Condition=" '$(ForceRebuild)' == '' ">false</ForceRebuild>
@@ -62,6 +71,12 @@
 			DBName="$(DbaseName)_$(KBGuid)"
 			ServerUserName="$(ServerUsername)"
 			ServerPassword="$(ServerPassword)"/>
+
+		<WriteLinesToFile
+            File="$(WorkingDirectory)\updateCount.txt"
+			Lines="1"
+            Overwrite="true"/>
+
 	</Target>
 
 	<Target Name="UpdateKB">
@@ -73,10 +88,23 @@
 			<Output TaskParameter="ObjectsToUpdateQuantity" PropertyName="UpdatedObjectsCount"/>
 		</UpdateFromServer>
 		<CloseKnowledgeBase/>
+
 		<WriteLinesToFile
             File="$(WorkingDirectory)\updateCount.txt"
             Lines="$(UpdatedObjectsCount)"
             Overwrite="true"/>
 	</Target>
+
+	<Target Name="Build">
+		<OpenKnowledgeBase Directory="$(WorkingDirectory)"/>
+		<SetDataStoreProperty Name="Database name" Value="$(AppDB)" />
+		<SetDataStoreProperty Name="Server name" Value="$(SQLInstance)" />
+		<SetGAMOptions 
+          	IncludeFrontendObjects="$(IncludeFrontendObjects)" 
+          	IncludeSDSamples="$(IncludeSDSamples)" 
+          	UpdateMode="$(UpdateMode)" />	
+		<BuildAll ForceRebuild="$(ForceRebuild)" CompileMains="true"/>
+	</Target>
+
 
 </Project>
