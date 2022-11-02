@@ -40,9 +40,11 @@ schedules:
     displayName: Custom time trigger
     branches:
       include:
-    always: true
+        - main
+    always: false
 
 trigger:
+  - main
 
 pool:
   name: $(EXEC_AGENT)
