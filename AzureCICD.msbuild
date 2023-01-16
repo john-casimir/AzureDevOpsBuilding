@@ -7,6 +7,8 @@
 	<Import Project="$(GX_INSTALL_DIR)GeneXus.Tasks.targets" Condition=" Exists('$(GX_INSTALL_DIR)GeneXus.Tasks.targets') "/>	
 	<Import Project="$(GX_INSTALL_DIR)\genexus.server.tasks.targets" Condition=" Exists('$(GX_INSTALL_DIR)GeneXus.Tasks.targets') "/>
 	<Import Project="$(GX_INSTALL_DIR)\Genexus.GAM.Tasks.targets" />
+	<Import Project="$(GX_INSTALL_DIR)\GXtest.targets" />
+
 	
 	<PropertyGroup>
 		<!--Input Parameters-->
@@ -41,6 +43,12 @@
 		<ForceRebuild Condition=" '$(ForceRebuild)' == '' ">false</ForceRebuild>
 		
 		<!-- Environment Propreties -->
+
+		<!-- Testing Properties -->
+		<TestObjectsList></TestObjectsList>
+		<TestType></TestType>
+		<TestFilePath></TestFilePath>
+
 	</PropertyGroup>
 	
 	<Target Name="SHOW" > 
@@ -106,5 +114,22 @@
 		<BuildAll ForceRebuild="$(ForceRebuild)" CompileMains="true"/>
 	</Target>
 
+	<Target Name="RunTestSuite">
+        <OpenKnowledgeBase Directory="$(WorkingDirectory)" />
+        <RunTests Type="$(TestType)" TestObjects="$(testObjectsList)" AllowFailedTests="true" ContinueOnFailedBuild="True" DetailedResults="true" ServerUserName="$(ServerUsername)" ServerPassword="$(ServerPassword)">
+            <Output TaskParameter="ExecutedCount" PropertyName="ExecutedCount"/>
+            <Output TaskParameter="SuccessCount" PropertyName="SuccessCount"/>
+            <Output TaskParameter="ErrorCount" PropertyName="ErrorCount"/>
+            <Output TaskParameter="WarningCount" PropertyName="WarningCount"/>
+            <Output TaskParameter="SkippedCount" PropertyName="SkippedCount"/>
+            <Output TaskParameter="ResultsFile" PropertyName="ResultsFile"/>
+        </RunTests>
+        <JUnitExportTests ServerUserName="$(ServerUsername)" ServerPassword="$(ServerPassword)" JUnitTestFilePath="$(TestFilePath)">  
+            <Output TaskParameter="JUnitTestFilePath" PropertyName="JUnitTestFilePathOutput"/>
+        </JUnitExportTests>
+        <CloseKnowledgeBase/>
+		<!-- Remove Error task if you don't desire pipeline failure upon test error. You may want to replace ErrorCount with WarningCount -->
+		<Error Text="Test execution failed. Check output file $(JUnitTestFilePathOutput)" Condition="$(ErrorCount) > 0" />
+    </Target>
 
 </Project>
