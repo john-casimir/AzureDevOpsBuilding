@@ -8,10 +8,10 @@ variables:
   EXEC_AGENT: "swtch-genexus-agent"
 
   #Environment variables: 
-  MSBUILD: $(msbuildpath)
-  BL_PATH: $(genexus)
-  WORKING_DIR: $(workingDir)
-  KB_PATH: $(workingDir)\$(kbalias)
+  MSBUILD: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\MSBuild\\Current\\Bin"
+  BL_PATH: "C:\\Program Files (x86)\\GeneXus\\GeneXus18"
+  WORKING_DIR: "C:\\AzureCheckouts"
+  KB_PATH: "C:\\AzureCheckouts\\kbalias"
   
   #KB Building variables:
   KB_ALIAS: $(kbalias)
