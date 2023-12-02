@@ -5,7 +5,7 @@
 
 variables:
   #Pipeline config variables:
-  EXEC_AGENT: $(agent)
+  EXEC_AGENT: "swtch-genexus-agent"
 
   #Environment variables: 
   MSBUILD: $(msbuildpath)
